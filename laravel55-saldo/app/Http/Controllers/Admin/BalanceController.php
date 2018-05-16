@@ -9,11 +9,9 @@ use App\Http\Requests\MoneyValidationFormRequest;
 
 class BalanceController extends Controller
 {
-    public function index(){
-    	# Teste
-    	
+    public function index(){    	
     	// dd( auth()->user()->balance()->get() );
-    	
+        
     	# Variavel $balance recebe balance->amount
     	# valor do campo amount da tabela balances
     	$balance = auth()->user()->balance;
