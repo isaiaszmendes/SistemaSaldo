@@ -18,13 +18,15 @@
 			<h3>Fazer Recarga</h3>
     	</div>
     	<div class="box-body">
-    		<form method="POST" action="{{ url('admin/balance/deposit') }}" >
+    		@include('admin.includes.alerts')
+    		<!-- O action esta enviando para a rota que por sua vez enviara para o controller e buscará a funcao() que faz alguma coisa -->
+    		<form method="POST" action="{{ url('admin/balance/deposit') }}" > 
    				{!! csrf_field() !!} 
     			<div class="form-group">
-    				<input type="text" class="form-control" placeholder="Valor Recarga">
+    				<input type="text" name="value" class="form-control" placeholder="Valor Recarga">
     			</div>
     			<div class="form-group">
-    				<button type="submit" class="btn btn-successes">Recarregar</button>
+    				<button type="submit" class="btn btn-success">Recarregar</button>
     			</div>
     		</form>
     	</div>
