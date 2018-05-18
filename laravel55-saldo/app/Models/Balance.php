@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\User;
 
 class Balance extends Model
 {
@@ -84,6 +85,10 @@ class Balance extends Model
                 'message' => 'Falha ao sacar!',
             ];
         }
+    }
+    public function transfer(float $value, User $sender): Array
+    {
+
     }
 }
 
