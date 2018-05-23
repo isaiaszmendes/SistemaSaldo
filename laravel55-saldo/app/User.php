@@ -35,7 +35,7 @@ class User extends Authenticatable
         return $this->hasOne(Balance::class);
     }
 
-    # Cria o relacionamento entre Users & Historics
+    # Cria o relacionamento entre Users & Historics 1 para muitos  1 pra n
     public function Historics()
     {
         return $this->hasMany(Historic::class);
@@ -44,7 +44,7 @@ class User extends Authenticatable
     public function getSender($sender)
     {
         return $this->where('name', 'LIKE', "%$sender%")
-                ->orWhere('email', "$sender")
+                ->orWhere('email', $sender)
                 ->get()
                 ->first();
     }

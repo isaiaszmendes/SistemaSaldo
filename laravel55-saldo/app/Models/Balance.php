@@ -46,7 +46,7 @@ class Balance extends Model
     	}
     }
 
-    #sacar 
+    #Sacar 
     public function withdraw(float $value): Array
     {
         if ($this->amount < $value)
@@ -86,9 +86,70 @@ class Balance extends Model
             ];
         }
     }
+    #Transferir 
     public function transfer(float $value, User $sender): Array
     {
+        if ($this->amount < $value)
+            return [
+                'success' => false,
+                'message' => 'Valor de saque é maior do que o permitido',
+            ];
 
+        DB::beginTransaction();
+
+        //////////////////////////////////
+        // Atualizando o proprio saldo  //
+        //////////////////////////////////
+        
+
+        $totalBefore = $this->amount ?? 0;
+        $this->amount -= number_format($value, 2, '.', '');
+        $transfer = $this->save();
+
+        $historic = auth()->user()->historics()->create([
+            'type'                  => 'T', // Tipo tranferir
+            'amount'                => $value,
+            'total_before'          => $totalBefore,
+            'total_after'           => $this->amount,
+            'date'                  => date('Ymd'),
+            'user_id_transaction'   => $sender->id,
+        ]);
+
+        ////////////////////////////////////
+        // Atualizando saldo do recebedor //
+        ////////////////////////////////////
+        
+        $senderBalance = $sender->balance()->firstOrCreate([]);
+        $totalBeforeSender = $senderBalance->amount ?? 0;
+        $senderBalance->amount += number_format($value, 2, '.', '');
+        $transferSender = $senderBalance->save();
+
+        $historicSender = $sender->historics()->create([
+            'type'                  => 'I', // Tipo tranferir
+            'amount'                => $value,
+            'total_before'          => $totalBeforeSender,
+            'total_after'           => $senderBalance->amount,
+            'date'                  => date('Ymd'),
+            'user_id_transaction'   => auth()->user()->id,
+        ]);
+
+        if ($transfer && $historic && $historicSender){
+            
+            DB::commit();
+
+            return [
+                'success' => true,
+                'message' => "Sucesso ao transferir",
+            ];
+
+        }else{
+            DB::rollBack();
+
+            return [
+                'success' => false,
+                'message' => 'Falha ao transferir!',
+            ];
+        }
     }
 }
 

@@ -88,7 +88,7 @@ class BalanceController extends Controller
 
     public function transferStore(MoneyValidationFormRequest $request, User $user)
     {
-        if(!$user->find($request->sender_id))
+        if(!$sender = $user->find($request->sender_id))
             return redirect()
                     ->route('balance.transfer')
                     ->with('success', 'Recebedor não encontrado!');
@@ -98,13 +98,19 @@ class BalanceController extends Controller
 
         if ($response['success']) 
             return redirect()
-                    ->route('balance.transfer')
+                    ->route('admin.balance')
                     ->with('success', $response['message']);
         
         return redirect()
                     ->route('balance.transfer')
                     ->with('error', $response['message']);
 
+    }
+    public function historic()
+    {
+        $historics = auth()->user()->historics()->get();
+
+        return view('admin.balance.historics', compact('historics'));
     }
 }
 

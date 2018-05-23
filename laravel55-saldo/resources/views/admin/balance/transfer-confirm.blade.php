@@ -23,6 +23,7 @@
     		@include('admin.includes.alerts')
     		<!-- O action esta enviando para a rota que por sua vez enviara para o controller e buscará a funcao() que faz alguma coisa -->
             <p><strong>Recebedor: </strong>{{ $sender->name }}</p>
+            <p><strong>E-mail: </strong>{{ $sender->email }}</p>
             <p><strong>Seu Saldo Atual: </strong>{{ number_format($balance->amount, 2, ',', '.') }}</p>
     		<form method="POST" action="{{ route('transfer.store') }}" > 
    				{!! csrf_field() !!} 
