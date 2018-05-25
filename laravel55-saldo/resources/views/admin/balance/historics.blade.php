@@ -14,18 +14,18 @@
 @section('content')
     <div class="box">
     	<div class="box-header">
-			<form action="" method="" class="form form-inline">
+			<form action="{{  route('historic.search') }}" method="" class="form form-inline">
                 <input type="text" name="id" class="form-control" placeholder="ID">
                 <input type="date" name="date" class="form-control">
 
                 <select name="types" id="" class="form-control">
                     <option value="">-- selecione o tipo --</option>
-                    @foreach($types as $type)
-                        <option value="{{ $type }}">{{ $type }}</option>
+                    @foreach($types as $key => $type)
+                        <option value="{{ $key }}">{{ $type }}</option>
                     @endforeach
                 </select>
 
-                <button type="submit" class="btn btn-info">
+                <button type="submit" class="btn btn-primary">
                     <i class="fa fa-search"></i> Pesquisar
                 </button>
             </form>

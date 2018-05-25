@@ -110,6 +110,7 @@ class BalanceController extends Controller
                     ->with('error', $response['message']);
 
     }
+
     public function historic(Historic $historic)
     {
         $historics = auth()->user()
@@ -118,6 +119,11 @@ class BalanceController extends Controller
                             ->paginate(5);//
         $types = $historic->type();
         return view('admin.balance.historics', compact('historics','types'));
+    }
+
+    public function searchHistoric(Request $request)
+    {
+        return '';
     }
 }
 
