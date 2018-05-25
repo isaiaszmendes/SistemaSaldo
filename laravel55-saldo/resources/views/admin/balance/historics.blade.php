@@ -14,7 +14,21 @@
 @section('content')
     <div class="box">
     	<div class="box-header">
-			
+			<form action="" method="" class="form form-inline">
+                <input type="text" name="id" class="form-control" placeholder="ID">
+                <input type="date" name="date" class="form-control">
+
+                <select name="types" id="" class="form-control">
+                    <option value="">-- selecione o tipo --</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type }}">{{ $type }}</option>
+                    @endforeach
+                </select>
+
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
+            </form>
     	</div>
     	<div class="box-body">
     		<table class="table table-bordered table-hover">
@@ -32,14 +46,21 @@
                     <tr>
                         <td>{{ $historic->id }}</td>
                         <td>{{ number_format($historic->amount, 2, ',', '.') }}</td>
-                        <td>{{ $historic->type }}</td>
+                        <td>{{ $historic->type($historic->type) }}</td>
                         <td>{{ $historic->date   }}</td>
-                        <td>{{ $historic->user_id_transaction }}</td>
+                        <td>
+                            @if($historic->user_id_transaction)
+                                {{ $historic->userSender->name }}
+                            @else
+                                - 
+                            @endif
+                        </td>
                     </tr>
                     @empty
                     @endforelse
                 </tbody>
             </table>
+            {!! $historics->links() !!}
     	</div>
     </div>
 @stop
